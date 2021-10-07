@@ -1,0 +1,6 @@
+{
+    "appPort": 3000,
+    "mongo": {
+        "host": "mongodb://localhost/tem-shop"
+    }
+}
