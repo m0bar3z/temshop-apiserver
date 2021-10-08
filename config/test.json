@@ -2,5 +2,21 @@
     "appPort": 4000,
     "mongo": {
         "host": "mongodb://localhost/tem-shop"
+    },
+    "test": {
+        "register": {
+            "username": "user1",
+            "password": "user1",
+            "mobile": "09024442211"
+        },
+        "user1": {
+            "username": "user1",
+            "password": "user1"
+        },
+        "admin": {
+            "username": "admin",
+            "password": "admin"
+        } 
     }
+
 }

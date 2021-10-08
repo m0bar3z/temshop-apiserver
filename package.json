@@ -4,10 +4,11 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "test": "mocha --timeout 10000 --recursive --exit",
+    "start": "ENV=dev nodemon server.js",
+    "dev": "ENV=dev node server.js"
   },
-  "author": "ali mobarezi",
+  "author": "mz",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.22.0",
@@ -23,5 +24,10 @@
     "mongoose-timestamp": "^0.6.0",
     "multer": "^1.4.3",
     "nodemon": "^2.0.13"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "mocha": "^9.1.2"
   }
 }
