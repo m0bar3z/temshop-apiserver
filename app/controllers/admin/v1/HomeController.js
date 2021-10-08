@@ -8,38 +8,16 @@ module.exports = new class HomeController extends Controller {
             res.json({
                 message: "login from admin api"
             })
-        } catch (error) {
-            
-        }
-    }
+        } 
+        catch (error) {
+            let handleError = new this.transforms.ErroTransfrom(error)
+                .parent(this.controllerTag)
+                .class(TAG)
+                .method('login')
+                .inputParams(req.body)
+                .call()
 
-    async addProduct(req, res) {
-        try {
-            res.json({
-                message: "add product api"
-            })
-        } catch (error) {
-            
-        }
-    }
-
-    async editProduct(req, res) {
-        try {
-            res.json({
-                message: "edit product api"
-            })
-        } catch (error) {
-            
-        }
-    }
-
-    async deleteProduct(req, res) {
-        try {
-            res.json({
-                message: "delete product api"
-            })
-        } catch (error) {
-            
+            if(!res.headersSent) return res.status(500).json(handleError)
         }
     }
 }

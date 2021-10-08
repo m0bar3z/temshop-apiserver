@@ -7,8 +7,6 @@ const bcrypt = require('bcrypt')
 module.exports = new class HomeController extends Controller {
     async register(req, res) {
         try {
-            console.log(req.body)
-            return res.json(req.body);
             req.checkBody('username', 'please enter correct username').notEmpty().isString();
             req.checkBody('username', 'username is too short or too long').isLength({ min: 4, max: 15})
             req.checkBody('password', 'please check password').notEmpty().isString();
