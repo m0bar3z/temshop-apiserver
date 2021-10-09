@@ -8,8 +8,12 @@ module.exports = {
     issuer: 'issuer',
     customerScope: 'customer',
     sellerScope: 'seller',
+    adminScope: 'admin',
     idTokenExpire: '1h',
     accessTokenExpire: '1h',
+    publicRoute: [
+        '/api/admin/v1/login'
+    ],
     path: {
         controllers: {
             root: path.resolve('./app/controllers'),

@@ -45,10 +45,14 @@ module.exports = new class HomeController extends Controller {
 
     async login(req, res) {
         try {
-            req.checkBody('username', 'please enter username').notEmpty().isString();
+            req.checkBody('username', 'please enter username').notEmpty()
+            req.checkBody('username', 'username must be string').isString()
             req.checkBody('username', 'username is too short or too long').isLength({ min: 4, max: 15});
-            req.checkBody('password', 'please enter password').notEmpty().isString();
+            req.checkBody('password', 'please enter password').notEmpty()
+            req.checkBody('password', 'password must be string').isString()
             req.checkBody('password', 'password is too short or too long').isLength({ min: 5, max: 24 });
+            if(this.showValidationErrors(req, res)) return;
+
             //google captcha
             let user = await this.model.Customer.findOne({ 'username': req.body.username})
             if(!(user && user.active))
