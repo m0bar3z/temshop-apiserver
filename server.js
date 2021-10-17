@@ -6,7 +6,6 @@ const bodyParser = require('body-parser')
 global.config = require('./app/config')
 let appConfig = require('config')
 
-
 mongoose.connect(appConfig.mongo.host)
     .then(() => {
         console.log('connected to mongodb')
@@ -20,6 +19,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.text())
 app.use(bodyParser.json({ type: 'application/json' }))
 app.use(expressValidator())
+
+app.use('/uploads', express.static('uploads'));
 
 const routes = require('./app/routes');
 

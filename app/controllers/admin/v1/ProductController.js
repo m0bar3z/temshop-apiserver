@@ -6,7 +6,8 @@ module.exports = new class ProductController extends Controller {
     async getProduct(req, res) {
         try {
             return res.json({
-                message: "get products list for admin panel"
+                message: "get products list for admin panel",
+                file: req.file
             })
 
         } catch (error) {
@@ -22,9 +23,36 @@ module.exports = new class ProductController extends Controller {
 
     async addProduct(req, res) {
         try {
-            res.json({
-                message: "add product api"
+            req.checkBody('name' ,'please enter product name').notEmpty()
+            req.checkBody('name', 'product name is too short or too long').isLength({ min: 4, max: 20});
+            req.checkBody('price' ,'please enter product price').notEmpty()
+            req.checkBody('price', 'product price should be numeric value').isInt({ gte: 0, lt: 2147483647 });
+            if(this.showValidationErrors(req, res)) return;
+            
+            if(!req.files.length)
+                return res.json({
+                    success: false,
+                    message: "invalid file(s)!"
+                })
+                
+
+            let params = {
+                name: req.body.name,
+                price: req.body.price,
+                images: []
+            }
+
+            req.files.map(file => {
+                params.images.push(`http://localhost:3000/${file.path.replace(/\\/g)}`)
             })
+
+            await this.model.Product.create(params)
+
+            return res.json({
+                success: true,
+                message: "new product added"
+            })
+            
         } 
         catch (error) {
             let handleError = new this.transforms.ErrorTransform(error)

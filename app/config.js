@@ -9,8 +9,8 @@ module.exports = {
     customerScope: 'customer',
     sellerScope: 'seller',
     adminScope: 'admin',
-    idTokenExpire: '1h',
-    accessTokenExpire: '1h',
+    idTokenExpire: '100h',
+    accessTokenExpire: '100h',
     publicRoute: [
         '/api/admin/v1/login'
     ],
