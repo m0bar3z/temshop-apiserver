@@ -211,6 +211,55 @@ define({ "api": [
   },
   {
     "type": "post",
+    "url": "/api/seller/v1/products",
+    "title": "AddProduct",
+    "version": "1.0.0",
+    "name": "addProduct",
+    "description": "<p>add product to store page</p>",
+    "group": "Seller",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "varchar",
+            "optional": false,
+            "field": "productId",
+            "description": "<p>product objectId from database</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "varchar",
+            "optional": false,
+            "field": "newPrice",
+            "description": "<p>new price for seller's store page</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n  success: true,\n  message: \"product added to store page\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n  success: false,\n  message: \"product not found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/routes/seller/v1/products.js",
+    "groupTitle": "Seller"
+  },
+  {
+    "type": "post",
     "url": "/api/seller/v1/login",
     "title": "Login",
     "version": "1.0.0",

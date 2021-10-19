@@ -3,10 +3,10 @@ const chai = require('chai')
 let should = chai.should()
 let chaiHttp = require('chai-http');
 const sectionName = 'V1 Seller Home Tests'
-const baseRoute = '/api/seller/v1/'
+const baseRoute = '/api/seller/v1/products'
 let server = require('../../../server')
 const appConfig = require('config')
-let register, seller, idToken, accessToken
+let seller, idToken, accessToken, addProduct
 const axios = require('axios').default;
 
 chai.use(chaiHttp)
@@ -14,13 +14,11 @@ chai.use(chaiHttp)
 describe(sectionName, () => {
     before(done => {
         console.log('Waiting to ensure database connection established')
-        register = appConfig.test.register
         seller = appConfig.test.sellerUser
+        addProduct = appConfig.test.sellerProduct        
         axios.post('http://localhost:4000/api/seller/v1/login', seller)
             .then(response =>{
                 response = response.data
-                console.log('this is response')
-                console.log(response)
                 if(response.success) {
                     idToken = response.data.idToken
                     accessToken =response.data.accessToken
@@ -39,11 +37,13 @@ describe(sectionName, () => {
 
     describe('Check Post APIs', () => {
         
-        it('check register', async () => {
+        it('add product', async () => {
             let res = await chai
                 .request(server)
                 .post(`${baseRoute}/`)
-                .send(register)
+                .set('authorization', accessToken)
+                .set('idToken', idToken)
+                .send(addProduct)
             res.should.have.status(200)
         })
     })

@@ -6,7 +6,9 @@ let Product =  new Schema({
     active: { type: Boolean, default: true },
     name: { type: String, required: true },
     price: { type: String, required: true},
-    images: { type: Array, default: []}
+    images: { type: Array, default: []},
+    seller: { type: Array, default: [ Schema.Types.ObjectId ]
+    }
 })
 
 Product.plugin(timestamp)

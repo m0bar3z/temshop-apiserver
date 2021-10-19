@@ -72,7 +72,7 @@ module.exports = new class HomeController extends Controller {
             
             let payload = {
                 username: req.body.username,
-                userId: user.user_id,
+                userId: user._id,
                 userStatus: user.active
             }
             let idToken = jwt.sign(payload, config.secret, options)

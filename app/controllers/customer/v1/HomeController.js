@@ -16,7 +16,8 @@ module.exports = new class HomeController extends Controller {
             req.checkBody('mobile', 'mobile must be numeric').isNumeric();
             if(this.showValidationErrors(req, res)) return;
             
-            //google captcha
+            //google captcha 
+            //validate mobile number
             let result = await this.model.Customer.findOne({ $or : [ { 'username': req.body.username }, { 'mobile': req.body.mobile } ]})
             if(result) 
                 return res.json({

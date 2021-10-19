@@ -12,7 +12,9 @@ module.exports = {
     idTokenExpire: '100h',
     accessTokenExpire: '100h',
     publicRoute: [
-        '/api/admin/v1/login'
+        '/api/admin/v1/login',
+        '/api/seller/v1/login',
+        '/api/seller/v1'
     ],
     path: {
         controllers: {

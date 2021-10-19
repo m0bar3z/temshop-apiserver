@@ -10,10 +10,10 @@ let Seller = new Schema({
     mobile: { type: String, required: true, unique: true },
     income : { type: String, default: "0" },
     paid: { type: String, default: "0" },
-    bankId: { type: String, default: "0" },
+    bankId: { type: String, default: "" },
     
     shop: { type: Array, deafult : [{
-            ProductId: Schema.Types.ObjectId,
+            productId: Schema.Types.ObjectId,
             newPrice: String
         }] 
     },
