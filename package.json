@@ -8,9 +8,16 @@
     "start": "ENV=dev nodemon server.js",
     "dev": "ENV=dev node server.js"
   },
+  "apidoc": {
+    "name": "tem-apiserver",
+    "version": "1.0.0",
+    "description": "tem-shop Restful service",
+    "title": "tem-shop"
+  },
   "author": "mz",
   "license": "ISC",
   "dependencies": {
+    "apidoc": "^0.28.1",
     "axios": "^0.22.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",

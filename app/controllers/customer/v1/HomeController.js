@@ -21,7 +21,7 @@ module.exports = new class HomeController extends Controller {
             if(result) 
                 return res.json({
                     success: false,
-                    message: "username or mobile has already taken!"
+                    message: "username or mobile is taken!"
                 })
 
             await this.model.Customer.create(req.body)
