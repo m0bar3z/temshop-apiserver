@@ -4,6 +4,8 @@
         "host": "mongodb://localhost/tem-shop"
     },
     "test": {
+        "productId": "617105de04ed8cdfee9097fa"
+        ,
         "register": {
             "username": "user1",
             "password": "user1",
@@ -14,8 +16,8 @@
             "password": "dark10"
         },
         "sellerProduct" : {
-            "productId": "616f0f78a9734dd82936a3b6",
-            "newPrice": "20000"
+            "productId": "617105de04ed8cdfee9097fa",
+            "newPrice": "243000"
         },
         "user1": {
             "username": "user1",

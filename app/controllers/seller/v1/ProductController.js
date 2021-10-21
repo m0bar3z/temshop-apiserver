@@ -62,6 +62,62 @@ module.exports = new class ProductController extends Controller {
                 .method('addProduct')
                 .inputParams(req.body)
                 .call()
+
+            if(!res.headersSent) return res.status(500).json(handleError)
+        }
+    }
+
+    async removeProduct(req, res) {
+        try {
+            req.checkParams('id', 'product id is not valid').isLength({ min: 24, max: 24});
+            if(this.showValidationErrors(req, res)) return; 
+            
+            let result = mongoose.isValidObjectId(req.params.id)
+            if(!result)
+                return res.json({
+                    success: false,
+                    message: 'product is not available'
+                })
+            
+            result = await this.model.Seller.findOne(
+                { _id: req.decodedUser.userId },
+                { shop: {
+                    $elemMatch: {
+                        productId: req.params.id
+                    }
+                }}
+            )
+
+            if(!result.shop.length)
+                return res.json({
+                    success: false,
+                    message: "product is not found"
+                })
+
+            await this.model.Seller.updateOne(
+                { _id: req.decodedUser.userId },
+                { $pull: { shop: { productId: req.params.id } } },
+                { multi: true }
+            )
+
+            await this.model.Product.updateOne(
+                { _id: req.params.id },
+                { $pull: { seller: { _id: req.decodedUser.userId } } },
+            )
+            
+            return res.json({
+                success: true,
+                message: 'product removed from store'
+            })
+        }
+        catch (error) {
+            let handleError = new this.transforms.ErrorTransform(error)
+            .parent(this.controllerTag)
+            .class(TAG)
+            .method('removeProduct')
+            .inputParams(req.params)
+            .call()
+
             if(!res.headersSent) return res.status(500).json(handleError)
         }
     }

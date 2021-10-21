@@ -259,6 +259,48 @@
     "groupTitle": "Seller"
   },
   {
+    "type": "delete",
+    "url": "/api/seller/v1/products/:id",
+    "title": "DeleteProduct",
+    "version": "1.0.0",
+    "name": "deleteProduct",
+    "description": "<p>delete product frome store page</p>",
+    "group": "Seller",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "varchar",
+            "optional": false,
+            "field": "id",
+            "description": "<p>product objectId from database</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n  success: true,\n  message: \"product removed from store\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n  success: false,\n  message: \"product is not found\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/routes/seller/v1/products.js",
+    "groupTitle": "Seller"
+  },
+  {
     "type": "post",
     "url": "/api/seller/v1/login",
     "title": "Login",

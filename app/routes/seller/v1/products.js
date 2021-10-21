@@ -25,4 +25,25 @@ const ProductController = require(`${sellerController}/v1/ProductController`)
 */
 router.post('/', ProductController.addProduct.bind(ProductController))
 
+
+/**
+  * @api {delete} /api/seller/v1/products/:id DeleteProduct
+  * @apiVersion 1.0.0
+  * @apiName deleteProduct
+  * @apiDescription delete product frome store page
+  * @apiGroup Seller
+  * @apiParam  {varchar} id product objectId from database
+  * @apiSuccessExample {json} Success-Response:
+  * {
+  *   success: true,
+  *   message: "product removed from store"
+  * }
+  * @apiErrorExample {json} Error-Response:
+  * {
+  *   success: false,
+  *   message: "product is not found"
+  * }
+*/
+router.delete('/:id', ProductController.removeProduct.bind(ProductController))
+
 module.exports = router

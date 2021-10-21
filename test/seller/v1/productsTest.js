@@ -6,7 +6,7 @@ const sectionName = 'V1 Seller Home Tests'
 const baseRoute = '/api/seller/v1/products'
 let server = require('../../../server')
 const appConfig = require('config')
-let seller, idToken, accessToken, addProduct
+let seller, idToken, accessToken, addProduct, productId
 const axios = require('axios').default;
 
 chai.use(chaiHttp)
@@ -15,7 +15,8 @@ describe(sectionName, () => {
     before(done => {
         console.log('Waiting to ensure database connection established')
         seller = appConfig.test.sellerUser
-        addProduct = appConfig.test.sellerProduct        
+        addProduct = appConfig.test.sellerProduct    
+        productId = appConfig.test.productId    
         axios.post('http://localhost:4000/api/seller/v1/login', seller)
             .then(response =>{
                 response = response.data
@@ -44,7 +45,18 @@ describe(sectionName, () => {
                 .set('authorization', accessToken)
                 .set('idToken', idToken)
                 .send(addProduct)
+            
             res.should.have.status(200)
+        })
+
+        it('delete product', async () => {
+            let res = await chai
+                .request(server)
+                .delete(`${baseRoute}/${productId}`)
+                .set('authorization', accessToken)
+                .set('idToken', idToken)
+
+            res.should.have.status(200)    
         })
     })
 })
