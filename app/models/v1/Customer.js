@@ -9,14 +9,12 @@ let Customer = new Schema({
     password: { type: String, required: true },
     mobile: { type: String, required: true, unique: true },
     address: { type: String, default: "" },
-
     payment: { type: Array, default: [{
             addPaymentRes: Object,
             verifyPaymentRes: Object,
             orderId: String
         }] 
     },
-
     cart: { type: Array, default: [{
             productId: Schema.Types.ObjectId,
             quantity: String,
@@ -28,7 +26,6 @@ let Customer = new Schema({
             onPayment: Boolean
         }]
     },
-    
     favorite: { type: Array, "default": [{
             productId: Schema.Types.ObjectId
         }] 

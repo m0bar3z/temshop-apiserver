@@ -7,8 +7,7 @@ let Product =  new Schema({
     name: { type: String, required: true },
     price: { type: String, required: true},
     images: { type: Array, default: []},
-    seller: { type: Array, default: [ Schema.Types.ObjectId ]
-    }
+    seller: { type: Array, default: [{ type: Schema.Types.ObjectId, ref: 'Seller' }] }
 })
 
 Product.plugin(timestamp)

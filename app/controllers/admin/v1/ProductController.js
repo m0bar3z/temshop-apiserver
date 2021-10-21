@@ -91,7 +91,7 @@ module.exports = new class ProductController extends Controller {
             })
         } 
         catch (error) {
-            let handleError = this.transforms.ErrorTransform(error)
+            let handleError = new this.transforms.ErrorTransform(error)
             .parent(this.controllerTag)
             .class(TAG)
             .method('deleteProduct')

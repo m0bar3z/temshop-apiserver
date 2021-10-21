@@ -13,7 +13,6 @@ module.exports = new class ProductController extends Controller {
             req.checkBody('newPrice', 'newPrice should be numeric value').isInt({ gte: 0, lt: 2147483647 });
             if(this.showValidationErrors(req, res)) return; 
             
-            
             let result = mongoose.isValidObjectId(req.body.productId)
             if(!result)
                 return res.json({
@@ -41,7 +40,11 @@ module.exports = new class ProductController extends Controller {
                 newPrice: req.body.newPrice
             }
             
-            product.seller.push(req.decodedUser.userId)
+            let update = { $addToSet: { seller:
+                { _id: req.decodedUser.userId }
+            }}
+            
+            await this.model.Product.findOneAndUpdate({ _id: req.body.productId }, update )
             user.shop.push(params)
             await product.save()
             await user.save()
@@ -51,8 +54,15 @@ module.exports = new class ProductController extends Controller {
                 message: "product added to store page"
             })
 
-        } catch (error) {
-            
+        } 
+        catch (error) {
+            let handleError = new this.transforms.ErrorTransform(error)
+                .parent(this.controllerTag)
+                .class(TAG)
+                .method('addProduct')
+                .inputParams(req.body)
+                .call()
+            if(!res.headersSent) return res.status(500).json(handleError)
         }
     }
 }
