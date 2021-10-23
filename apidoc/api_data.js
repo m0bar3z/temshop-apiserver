@@ -301,6 +301,26 @@ define({ "api": [
     "groupTitle": "Seller"
   },
   {
+    "type": "get",
+    "url": "/api/seller/v1/products/",
+    "title": "GetProducts",
+    "version": "1.0.0",
+    "name": "getProducts",
+    "description": "<p>get product list</p>",
+    "group": "Seller",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": "{\n  success: true,\n  message: \"active productList is ready\",\n  data: [\n     {\n       _id: \"1234567890\",\n       name: \"product 1\",\n       price: \"20000\",\n       images: [\n         \"http://upload.temshop.ir./products/image.png\"\n       ],\n       newPrice: \"25000\"\n     }\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/routes/seller/v1/products.js",
+    "groupTitle": "Seller"
+  },
+  {
     "type": "post",
     "url": "/api/seller/v1/login",
     "title": "Login",

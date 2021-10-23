@@ -46,4 +46,30 @@ router.post('/', ProductController.addProduct.bind(ProductController))
 */
 router.delete('/:id', ProductController.removeProduct.bind(ProductController))
 
+
+/**
+ * @api {get} /api/seller/v1/products/ GetProducts
+ * @apiVersion 1.0.0
+ * @apiName getProducts
+ * @apiDescription get product list 
+ * @apiGroup Seller
+ * @apiSuccessExample {json} Success-Response: 
+ * {
+ *   success: true,
+ *   message: "active productList is ready",
+ *   data: [
+ *      {
+ *        _id: "1234567890",
+ *        name: "product 1",
+ *        price: "20000",
+ *        images: [
+ *          "http://upload.temshop.ir./products/image.png"
+ *        ],
+ *        newPrice: "25000"
+ *      }
+ *   ]
+ * }
+ */
+router.get('/', ProductController.getProductList.bind(ProductController))
+
 module.exports = router

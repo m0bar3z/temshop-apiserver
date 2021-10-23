@@ -112,12 +112,59 @@ module.exports = new class ProductController extends Controller {
         }
         catch (error) {
             let handleError = new this.transforms.ErrorTransform(error)
-            .parent(this.controllerTag)
-            .class(TAG)
-            .method('removeProduct')
-            .inputParams(req.params)
-            .call()
+                .parent(this.controllerTag)
+                .class(TAG)
+                .method('removeProduct')
+                .inputParams(req.params)
+                .call()
 
+            if(!res.headersSent) return res.status(500).json(handleError)
+        }
+    }
+
+    async getProductList(req, res) {
+        try {
+            let result = await this.model.Seller.findOne({ _id: req.decodedUser.userId }, { shop: 1 })
+
+            if(!result.shop.length) 
+                return res.json({
+                    success: true,
+                    message: 'empty product list!',
+                    data: {
+                        product: []
+                    }
+                })
+
+            let ids = result.shop.map(item => item.productId)
+
+            let data = await this.model.Product.find(
+                { _id: { $in: ids }, active: true }, 
+                { name: 1, images: 1, price: 1 }
+            )
+
+            data = data.map(item => {
+                result.shop.find(obj => {
+                    if(obj.productId == item._id) {
+                        item._doc = { ...item._doc, newPrice: obj.newPrice }
+                        return true
+                    }
+                })
+                return item
+            })
+            
+            return res.json({
+                success: true,
+                message: 'active product list is ready',
+                data
+            })    
+        } 
+        catch (error) {
+            let handleError = new this.transforms.ErrorTransform(error)
+                .parent(this.controllerTag)
+                .class(TAG)
+                .method('getProductList')
+                .call()
+            
             if(!res.headersSent) return res.status(500).json(handleError)
         }
     }

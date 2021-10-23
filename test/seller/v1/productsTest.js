@@ -48,7 +48,10 @@ describe(sectionName, () => {
             
             res.should.have.status(200)
         })
+    })
 
+    describe('Check Delete APIs', () => {
+       
         it('delete product', async () => {
             let res = await chai
                 .request(server)
@@ -58,5 +61,20 @@ describe(sectionName, () => {
 
             res.should.have.status(200)    
         })
+
+    })
+
+    describe('Check Get APIs', () => {
+        
+        it('get product list', async () => {
+            let res = await chai
+                .request(server)
+                .get(`${baseRoute}`)
+                .set('authorization', accessToken)
+                .set('idToken', idToken)
+
+            res.should.have.status(200)
+        })
+    
     })
 })
