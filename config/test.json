@@ -4,7 +4,8 @@
         "host": "mongodb://localhost/tem-shop"
     },
     "test": {
-        "productId": "617105de04ed8cdfee9097fa"
+        "productId": "6171027303ad1f42dcc862d8",
+        "productPrice": "85000"
         ,
         "register": {
             "username": "user1",
