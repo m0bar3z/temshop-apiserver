@@ -72,4 +72,26 @@ router.delete('/:id', ProductController.removeProduct.bind(ProductController))
  */
 router.get('/', ProductController.getProductList.bind(ProductController))
 
+
+/**
+ * @api {put} /api/seller/v1/products/:id/price/:newPrice UpdateProductPrice
+ * @apiVersion 1.0.0
+ * @apiName updateProductPrice
+ * @apiDescription update product price 
+ * @apiGroup Seller
+ * @apiParam  {varchar} id product id
+ * @apiParam  {varchar} newPrice product new price 
+ * @apiSuccessExample {json} Success-Response:
+ * {
+ *    success: true,
+ *    message: "product price is modified"
+ * }
+ * @apiErrorExample {json} Error-response:
+ * {
+ *    success: false, 
+ *    message: "product is not available"
+ * }
+ */
+router.put('/:id/price/:newPrice', ProductController.editNewPrice.bind(ProductController))
+
 module.exports = router

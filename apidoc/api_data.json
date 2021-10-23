@@ -424,5 +424,54 @@
     },
     "filename": "app/routes/seller/v1/home.js",
     "groupTitle": "Seller"
+  },
+  {
+    "type": "put",
+    "url": "/api/seller/v1/products/:id/price/:newPrice",
+    "title": "UpdateProductPrice",
+    "version": "1.0.0",
+    "name": "updateProductPrice",
+    "description": "<p>update product price</p>",
+    "group": "Seller",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "varchar",
+            "optional": false,
+            "field": "id",
+            "description": "<p>product id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "varchar",
+            "optional": false,
+            "field": "newPrice",
+            "description": "<p>product new price</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n   success: true,\n   message: \"product price is modified\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-response:",
+          "content": "{\n   success: false, \n   message: \"product is not available\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/routes/seller/v1/products.js",
+    "groupTitle": "Seller"
   }
 ]

@@ -151,7 +151,7 @@ module.exports = new class ProductController extends Controller {
                 })
                 return item
             })
-            
+
             return res.json({
                 success: true,
                 message: 'active product list is ready',
@@ -165,6 +165,46 @@ module.exports = new class ProductController extends Controller {
                 .method('getProductList')
                 .call()
             
+            if(!res.headersSent) return res.status(500).json(handleError)
+        }
+    }
+
+    async editNewPrice(req, res) {
+        try {
+            req.checkParams('id', 'product id is not valid').isLength({ min: 24, max: 24});
+            req.checkParams('newPrice', 'price is not valid').isInt({ gte: 0, lt: 2147483647 });
+            req.checkParams('newPrice', 'price length is not valid').isLength({ min: 4, max: 6 })
+            if(this.showValidationErrors(req, res)) return; 
+
+            let result = mongoose.isValidObjectId(req.params.id)
+            if(!result)
+                return res.json({
+                    success: false,
+                    message: 'product is not available'
+                })
+
+            result = await this.model.Seller.updateOne(
+                { _id: req.decodedUser.userId, "shop.productId": req.params.id },
+                { 
+                    $set: {
+                        "shop.$.newPrice": req.params.newPrice
+                    }
+                }
+            )
+
+            return res.json({
+                success: true,
+                message: "product price is modified"
+            })    
+        } 
+        catch (error) {
+            let handleError = new this.transforms.ErrorTransform(error)
+                .parent(this.controllerTag)
+                .class(TAG)
+                .method('editNewPrice')
+                .inputParams(req.params)
+                .call()
+
             if(!res.headersSent) return res.status(500).json(handleError)
         }
     }
