@@ -5,12 +5,14 @@
     },
     "test": {
         "productId": "6171027303ad1f42dcc862d8",
-        "productPrice": "85000"
-        ,
+        "productPrice": "85000",
         "register": {
             "username": "user1",
             "password": "user1",
             "mobile": "09024442211"
+        },
+        "sellerCardNumber": {
+            "cardNum": "1234567891234567"
         },
         "sellerUser": {
             "username": "dark10",

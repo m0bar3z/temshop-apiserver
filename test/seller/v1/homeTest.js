@@ -19,8 +19,7 @@ describe(sectionName, () => {
         axios.post('http://localhost:4000/api/seller/v1/login', seller)
             .then(response =>{
                 response = response.data
-                console.log('this is response')
-                console.log(response)
+                
                 if(response.success) {
                     idToken = response.data.idToken
                     accessToken =response.data.accessToken
