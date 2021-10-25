@@ -92,6 +92,6 @@ router.get('/', ProductController.getProductList.bind(ProductController))
  *    message: "product is not available"
  * }
  */
-router.put('/:id/price/:newPrice', ProductController.editNewPrice.bind(ProductController))
+router.put('/:id/price/:newPrice', ProductController.editProductPrice.bind(ProductController))
 
 module.exports = router

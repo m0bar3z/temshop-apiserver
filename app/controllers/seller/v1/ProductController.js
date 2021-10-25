@@ -169,7 +169,7 @@ module.exports = new class ProductController extends Controller {
         }
     }
 
-    async editNewPrice(req, res) {
+    async editProductPrice(req, res) {
         try {
             req.checkParams('id', 'product id is not valid').isLength({ min: 24, max: 24});
             req.checkParams('newPrice', 'price is not valid').isInt({ gte: 0, lt: 2147483647 });
