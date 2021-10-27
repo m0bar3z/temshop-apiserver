@@ -14,7 +14,9 @@ module.exports = {
     publicRoute: [
         '/api/admin/v1/login',
         '/api/seller/v1/login',
-        '/api/seller/v1'
+        '/api/seller/v1',
+        '/api/customer/v1',
+        '/api/customer/v1/login'
     ],
     path: {
         controllers: {

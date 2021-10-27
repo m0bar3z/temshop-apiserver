@@ -21,7 +21,7 @@ let Customer = new Schema({
             size: String,
             maxPrice: String,
             orderId: String,
-            seller: String,
+            sellerId: Schema.Types.ObjectId,
             isPaid: Boolean,
             onPayment: Boolean
         }]
