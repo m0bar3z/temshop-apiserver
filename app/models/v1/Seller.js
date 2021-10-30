@@ -8,19 +8,19 @@ let Seller = new Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     mobile: { type: String, required: true, unique: true },
-    income : { type: String, default: "0" },
-    paid: { type: String, default: "0" },
+    income : { type: Number, default: 0 },
+    paid: { type: Number, default: 0 },
     bankId: { type: String, default: "" },
     
     shop: { type: Array, deafult : [{
-            productId: Schema.Types.ObjectId,
-            newPrice: String
+            product: Schema.Types.ObjectId,
+            newPrice: Number
         }] 
     },
 
     sold: { type: Array, default: [{
             orderId: String,
-            customerId: String
+            customer: Schema.Types.ObjectId
         }] 
     }
 })

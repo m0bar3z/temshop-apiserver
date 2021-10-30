@@ -5,13 +5,13 @@ let timeStamps = require('mongoose-timestamp')
 
 let Order = new Schema({
     delivered: { type: Boolean, default: false },
-    productId: { type: Schema.Types.ObjectId },
-    customerId: { type: Schema.Types.ObjectId },
-    sellerId: { type: Schema.Types.ObjectId },
+    product: { type: Schema.Types.ObjectId },
+    customer: { type: Schema.Types.ObjectId },
+    seller: { type: Schema.Types.ObjectId },
     orderId: { type: String, index: true },
-    quantity: { type: String, default: "1" },
+    quantity: { type: Number, default: 1 },
     size: { type: String },
-    maxPrice: { type: String },
+    maxPrice: { type: Number, required: true},
 })
 
 Order.plugin(timeStamps);

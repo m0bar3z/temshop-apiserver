@@ -16,14 +16,13 @@ let Customer = new Schema({
         }] 
     },
     cart: { type: Array, default: [{
-            productId: Schema.Types.ObjectId,
+            product: Schema.Types.ObjectId,
+            seller: Schema.Types.ObjectId,
             quantity: String,
             size: String,
-            maxPrice: String,
+            maxPrice: Number,
             orderId: String,
-            sellerId: Schema.Types.ObjectId,
             isPaid: Boolean,
-            onPayment: Boolean
         }]
     },
     favorite: { type: Array, "default": [{
