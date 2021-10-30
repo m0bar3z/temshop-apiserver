@@ -61,7 +61,7 @@ module.exports = (req, res, next) => {
                 message: 'idToken is not valid'
             }
 
-        req.decodedData = decoded
+        req.decodedUser = decoded
         next()
     })
 
