@@ -1,6 +1,5 @@
 const Controller = require(`${config.path.controllers.seller}/Controller`)
 const TAG = 'v1_Proudct'
-const mongoose = require('mongoose')
 
 module.exports = new class ProductController extends Controller {
 
@@ -13,7 +12,7 @@ module.exports = new class ProductController extends Controller {
             req.checkBody('newPrice', 'newPrice must be an integer number').isInt({ gt: 0, lt: 2147483647 });
             if(this.showValidationErrors(req, res)) return; 
             
-            let result = mongoose.isValidObjectId(req.body.productId)
+            let result = this.isValidObjectId(req.body.productId)
             if(!result)
                 return res.json({
                     success: false,
@@ -36,7 +35,7 @@ module.exports = new class ProductController extends Controller {
                 })
             
             let params = {
-                product: mongoose.Types.ObjectId(req.body.productId),
+                product: this.toObjectId(req.body.productId),
                 newPrice: parseInt(req.body.newPrice)
             }
             
@@ -72,7 +71,7 @@ module.exports = new class ProductController extends Controller {
             req.checkParams('id', 'product id is not valid').isLength({ min: 24, max: 24});
             if(this.showValidationErrors(req, res)) return; 
             
-            let result = mongoose.isValidObjectId(req.params.id)
+            let result = this.isValidObjectId(req.params.id)
             if(!result)
                 return res.json({
                     success: false,
@@ -83,7 +82,7 @@ module.exports = new class ProductController extends Controller {
                 { _id: req.decodedUser.userId },
                 { shop: {
                     $elemMatch: {
-                        product: mongoose.Types.ObjectId(req.params.id)
+                        product: this.toObjectId(req.params.id)
                     }
                 }}
             )
@@ -96,7 +95,7 @@ module.exports = new class ProductController extends Controller {
 
             await this.model.Seller.updateOne(
                 { _id: req.decodedUser.userId },
-                { $pull: { shop: { product: mongoose.Types.ObjectId(req.params.id) }}},
+                { $pull: { shop: { product: this.toObjectId(req.params.id) }}},
                 { multi: true }
             )
 
@@ -176,7 +175,7 @@ module.exports = new class ProductController extends Controller {
             req.checkParams('newPrice', 'price length is not valid').isLength({ min: 4, max: 6 })
             if(this.showValidationErrors(req, res)) return; 
 
-            let result = mongoose.isValidObjectId(req.params.id)
+            let result = this.isValidObjectId(req.params.id)
             if(!result)
                 return res.json({
                     success: false,
@@ -185,7 +184,7 @@ module.exports = new class ProductController extends Controller {
 
             let owningProduct = await this.model.Seller.findOne({ 
                 _id: req.decodedUser.userId, 
-                "shop.product": mongoose.Types.ObjectId(req.params.id)
+                "shop.product": this.toObjectId(req.params.id)
             })
 
             if(!owningProduct)
@@ -195,7 +194,7 @@ module.exports = new class ProductController extends Controller {
                 })
 
             await this.model.Seller.updateOne(
-                { _id: req.decodedUser.userId, "shop.product": mongoose.Types.ObjectId(req.params.id) },
+                { _id: req.decodedUser.userId, "shop.product": this.toObjectId(req.params.id) },
                 { 
                     $set: {
                         "shop.$.newPrice": parseInt(req.params.newPrice)

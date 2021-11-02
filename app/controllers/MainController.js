@@ -5,6 +5,8 @@ let Order = require(`${config.path.models.root}/v1/Order`)
 let Admin = require(`${config.path.models.root}/v1/Admin`)
 let ErrorTransform = require(`${config.path.transform}/error/Transform`)
 
+const mongoose = require('mongoose')
+
 module.exports = class MainController {
     constructor() {
         this.model = { Product, Customer, Seller, Order, Admin }
@@ -28,5 +30,13 @@ module.exports = class MainController {
         } else {
             return false;
         }
+    }
+
+    isValidObjectId(id) {
+        return mongoose.isValidObjectId(id)
+    }
+
+    toObjectId(id) {
+        return mongoose.Types.ObjectId(id)
     }
 }

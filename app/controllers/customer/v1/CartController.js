@@ -1,6 +1,5 @@
 const TAG = 'V1_Cart'
 const Controller = require(`${config.path.controllers.customer}/Controller`)
-const mongoose = require('mongoose')
 
 module.exports = new class CartController extends Controller {
     async addToCart(req, res) {
@@ -13,7 +12,7 @@ module.exports = new class CartController extends Controller {
             req.checkBody('seller', "seller's username must be string").isString()
             if(this.showValidationErrors(req, res)) return;
 
-            let result = mongoose.isValidObjectId(req.body.productId)
+            let result = this.isValidObjectId(req.body.productId)
             if(!result) 
                 return res.json({
                     success: false,
@@ -67,7 +66,7 @@ module.exports = new class CartController extends Controller {
                 })
             
             let params = {
-                product: mongoose.Types.ObjectId(req.body.productId),
+                product: this.toObjectId(req.body.productId),
                 quantity: parseInt(req.body.quantity),
             }
 
