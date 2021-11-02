@@ -9,8 +9,8 @@ module.exports = new class ProductController extends Controller {
             req.checkBody('productId', 'please enter productId').notEmpty()
             req.checkBody('productId', 'productId must be string').isString()
             req.checkBody('newPrice', 'please enter newPrice').notEmpty()
-            req.checkBody('newPrice', 'newPrice must be string').isString()
-            req.checkBody('newPrice', 'newPrice should be numeric value').isInt({ gte: 0, lt: 2147483647 });
+            req.checkBody('newPrice', 'newPrice must be numeric').isNumeric()
+            req.checkBody('newPrice', 'newPrice must be an integer number').isInt({ gt: 0, lt: 2147483647 });
             if(this.showValidationErrors(req, res)) return; 
             
             let result = mongoose.isValidObjectId(req.body.productId)
@@ -28,7 +28,7 @@ module.exports = new class ProductController extends Controller {
                 })
 
             let user = await this.model.Seller.findOne({ '_id': req.decodedUser.userId })
-            result = user.shop.find(item => item.productId === req.body.productId)
+            result = user.shop.find(item => item.product.valueOf() === req.body.productId)
             if(result)
                 return res.json({
                     success: false,
@@ -36,8 +36,8 @@ module.exports = new class ProductController extends Controller {
                 })
             
             let params = {
-                productId: req.body.productId,
-                newPrice: req.body.newPrice
+                product: mongoose.Types.ObjectId(req.body.productId),
+                newPrice: parseInt(req.body.newPrice)
             }
             
             let update = { $addToSet: { seller:
@@ -78,16 +78,16 @@ module.exports = new class ProductController extends Controller {
                     success: false,
                     message: 'product is not available'
                 })
-            
+
             result = await this.model.Seller.findOne(
                 { _id: req.decodedUser.userId },
                 { shop: {
                     $elemMatch: {
-                        productId: req.params.id
+                        product: mongoose.Types.ObjectId(req.params.id)
                     }
                 }}
             )
-
+              
             if(!result.shop.length)
                 return res.json({
                     success: false,
@@ -96,7 +96,7 @@ module.exports = new class ProductController extends Controller {
 
             await this.model.Seller.updateOne(
                 { _id: req.decodedUser.userId },
-                { $pull: { shop: { productId: req.params.id } } },
+                { $pull: { shop: { product: mongoose.Types.ObjectId(req.params.id) }}},
                 { multi: true }
             )
 
@@ -135,7 +135,7 @@ module.exports = new class ProductController extends Controller {
                     }
                 })
 
-            let ids = result.shop.map(item => item.productId)
+            let ids = result.shop.map(item => item.product)
 
             let data = await this.model.Product.find(
                 { _id: { $in: ids }, active: true }, 
@@ -144,7 +144,7 @@ module.exports = new class ProductController extends Controller {
 
             data = data.map(item => {
                 result.shop.find(obj => {
-                    if(obj.productId == item._id) {
+                    if(obj.product.valueOf() == item._id.valueOf()) {
                         item._doc = { ...item._doc, newPrice: obj.newPrice }
                         return true
                     }
@@ -183,15 +183,25 @@ module.exports = new class ProductController extends Controller {
                     message: 'product is not available'
                 })
 
-            result = await this.model.Seller.updateOne(
-                { _id: req.decodedUser.userId, "shop.productId": req.params.id },
+            let owningProduct = await this.model.Seller.findOne({ 
+                _id: req.decodedUser.userId, 
+                "shop.product": mongoose.Types.ObjectId(req.params.id)
+            })
+
+            if(!owningProduct)
+                return res.json({
+                    success: false,
+                    message: "product is not found!"
+                })
+
+            await this.model.Seller.updateOne(
+                { _id: req.decodedUser.userId, "shop.product": mongoose.Types.ObjectId(req.params.id) },
                 { 
                     $set: {
-                        "shop.$.newPrice": req.params.newPrice
+                        "shop.$.newPrice": parseInt(req.params.newPrice)
                     }
                 }
             )
-
             return res.json({
                 success: true,
                 message: "product price is modified"
