@@ -42,7 +42,7 @@ module.exports = new class CartController extends Controller {
                     message: "seller wasn't found!"
                 })
     
-            let sellerHasProduct = seller.shop.find(item => item.product === req.body.productId)
+            let sellerHasProduct = seller.shop.find(item => item.product.valueOf() === req.body.productId)
             if(!sellerHasProduct) 
                 return res.json({
                     success: false,
@@ -54,7 +54,7 @@ module.exports = new class CartController extends Controller {
                 if(
                     item.product.valueOf() === req.body.productId && 
                     item.seller.valueOf() === seller._id.valueOf() &&
-                    item.quantity + req.body.quantity > 5
+                    item.quantity + parseInt(req.body.quantity) > 5
                 ) {
                     return true
                 }
@@ -68,7 +68,7 @@ module.exports = new class CartController extends Controller {
             
             let params = {
                 product: mongoose.Types.ObjectId(req.body.productId),
-                quantity: req.body.quantity,
+                quantity: parseInt(req.body.quantity),
             }
 
             // find product price from seller's document 
@@ -82,7 +82,7 @@ module.exports = new class CartController extends Controller {
 
             result = await this.model.Customer.updateOne(
                 { _id: req.decodedUser.userId, "cart.product": params.product },
-                { $inc: { "cart.$.quantity": req.body.quantity, "cart.$.maxPrice": params.maxPrice }}
+                { $inc: { "cart.$.quantity": params.quantity, "cart.$.maxPrice": params.maxPrice }}
             )
             
             await this.model.Customer.updateOne(
