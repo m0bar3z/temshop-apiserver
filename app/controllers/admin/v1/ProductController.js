@@ -6,8 +6,7 @@ module.exports = new class ProductController extends Controller {
     async getProduct(req, res) {
         try {
             return res.json({
-                message: "get products list for admin panel",
-                file: req.file
+                message: "get products list for admin panel"
             })
 
         } catch (error) {
@@ -38,7 +37,7 @@ module.exports = new class ProductController extends Controller {
 
             let params = {
                 name: req.body.name,
-                price: req.body.price,
+                price: parseInt(req.body.price),
                 images: []
             }
 
