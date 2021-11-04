@@ -23,13 +23,18 @@
             "newPrice": "243000"
         },
         "user1": {
-            "username": "user1",
-            "password": "user1"
+            "username": "dark10",
+            "password": "dark10"
         },
         "admin": {
             "username": "admin",
             "password": "admin"
-        } 
+        }, 
+        "cart": {
+            "productId": "6171050347223805ef697910",
+            "quantity": "2",
+            "seller": "dark10"            
+        }
     }
 
 }
