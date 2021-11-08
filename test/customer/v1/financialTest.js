@@ -6,7 +6,7 @@ const sectionName = 'V1 Customer Financial Test'
 const baseRoute = '/api/customer/v1/financial'
 let server = require('../../../server')
 let appConfig = require('config')
-let customer, idToken, accessToken
+let customer, idToken, accessToken, orderId
 let axios = require('axios').default
 
 chai.use(chaiHttp)
@@ -15,6 +15,7 @@ describe(`${sectionName}`, () => {
     before(done => {
         console.log('Waiting to ensure database connection established')
         customer = appConfig.test.user1
+        orderId = appConfig.test.orderId
         axios.post('http://localhost:4000/api/customer/v1/login', customer)
             .then(response => {
                 response = response.data
@@ -42,6 +43,16 @@ describe(`${sectionName}`, () => {
                 .post(`${baseRoute}/payment`)
                 .set('authorization', accessToken)
                 .set('idtoken', idToken)
+
+            res.should.have.status(200)
+        })
+
+        it('verify payment', async () => {
+            let res = await chai
+                .request(server)
+                .post(`${baseRoute}/payment/verify/${orderId}`)
+                .set('idtoken', idToken)
+                .set('authorization', accessToken)
 
             res.should.have.status(200)
         })

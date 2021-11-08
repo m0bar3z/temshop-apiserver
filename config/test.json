@@ -6,6 +6,7 @@
     "test": {
         "productId": "6171027303ad1f42dcc862d8",
         "productPrice": "85000",
+        "orderId": "TEM-b2fc4475",
         "register": {
             "username": "user1",
             "password": "user1",
