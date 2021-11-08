@@ -30,15 +30,8 @@ module.exports = new class FinancialController extends Controller {
                 callback: "https://www.google.com"
             }  
 
-            let headers = {
-                "x-api-key": "6a7f99eb-7c20-4412-a972-6dfb7cd253a4",
-                "x-sandbox": true,
-                "content-type": "application/json"
-            }  
-
-            let response = await axios.post('https://api.idpay.ir/v1.1/payment',JSON.stringify(body) , { headers })
-            
-
+            let response = await axios.post('https://api.idpay.ir/v1.1/payment',JSON.stringify(body) , { headers: config.idPayHeaders } )
+           
             await this.model.Customer.updateOne(
                 { _id: req.decodedUser.userId },
 
@@ -74,13 +67,97 @@ module.exports = new class FinancialController extends Controller {
                 { multi: true }
             )
 
-            return res.redirect(response.data.link)
+            //return res.redirect(response.data.link)
+            return res.json({
+                success: true,
+                message: "new payment successfully created",
+                data: {
+                    orderId: id,
+                    link: response.data.link
+                }
+            })
         } 
         catch (error) {
             let handleError = new this.transforms.ErrorTransform(error)
                 .parent(this.controllerTag)
                 .class(TAG)
                 .method('addPayment')
+                .inputParams(req.body)
+                .call()
+
+            if(!res.headersSent) return res.status(500).json(handleError)
+        }
+    }
+
+    async verifyPayment(req, res) {
+        try {
+            req.checkParams('orderId', 'orderId length must be 12').isLength({ min: 12, max: 12 })
+            if(this.showValidationErrors(req, res)) return
+
+            let customer = await this.model.Customer.findOne(
+                { _id: req.decodedUser.userId },
+                { payment: { $elemMatch: {orderId: req.params.orderId} }}   
+            )
+
+            // if(customer.payment.length === 1) 
+            //     return res.json({
+            //         success: false,
+            //         message: "nothing found!"
+            //     })
+
+            let body = {
+                id: customer.payment[0].addPaymentRes.id,
+                order_id: customer.payment[0].orderId
+            }
+
+            let body2 = {
+                id: "19b61a039899196f7e4ca06e536549b5",
+                order_id: "1234"
+            }
+            
+            let idPayResponse = {}
+
+            await axios.post('https://api.idpay.ir/v1.1/payment/verify',JSON.stringify(body) , { headers: config.idPayHeaders })
+                .then(response => {
+                    idPayResponse = response.data
+                })
+                .catch(error => {
+                    return res.json({
+                        success: false,
+                        message: error.message
+                    })
+                })  
+
+            if(idPayResponse.status === 100) {
+                await this.model.Customer.updateOne(
+                    { _id: req.decodedUser.userId, "payment.orderId": req.params.orderId },
+                    { $set: { "payment.$.verifyPaymentRes": idPayResponse }}
+                )
+
+                await this.model.Order.updateMany(
+                    { orderId: req.params.orderId },
+                    { $set: { "isPaid": true } }
+                )
+
+                return res.json({
+                    success: true,
+                    message: "payment is verified successfully",
+                    data: idPayResponse
+                })
+            }
+
+            if(idPayResponse.status === 101)
+                return res.json({
+                    success: true,
+                    message: "payment has been verified!"
+                })
+
+        } 
+        catch (error) {
+            let handleError = new this.transforms.ErrorTransform(error)
+                .parent(this.controllerTag)
+                .class(TAG)
+                .method('verifyPayment')
                 .inputParams(req.body)
                 .call()
 

@@ -5,4 +5,6 @@ const FinancialController = require(`${config.path.controllers.customer}/v1/Fina
 
 router.post('/payment', FinancialController.addPayment.bind(FinancialController))
 
+router.post('/payment/verify/:orderId', FinancialController.verifyPayment.bind(FinancialController))
+
 module.exports = router

@@ -9,8 +9,13 @@ module.exports = {
     customerScope: 'customer',
     sellerScope: 'seller',
     adminScope: 'admin',
-    idTokenExpire: '100h',
-    accessTokenExpire: '100h',
+    idTokenExpire: '1000h',
+    accessTokenExpire: '1000h',
+    idPayHeaders: {
+        "x-api-key": "6a7f99eb-7c20-4412-a972-6dfb7cd253a4",
+        "x-sandbox": true,
+        "content-type": "application/json"
+    },
     publicRoute: [
         '/api/admin/v1/login',
         '/api/seller/v1/login',
