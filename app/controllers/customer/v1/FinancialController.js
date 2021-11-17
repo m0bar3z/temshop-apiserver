@@ -164,4 +164,62 @@ module.exports = new class FinancialController extends Controller {
             if(!res.headersSent) return res.status(500).json(handleError)
         }
     }
+
+    async resetPayment(req, res) {
+        try {
+            req.checkParams('orderId', 'orderId length must be 12').isLength({ min: 12, max: 12 })
+            if(this.showValidationErrors(req, res)) return
+
+            let customer = await this.model.Customer.findOne(
+                { _id: req.decodedUser.userId},
+                { payment: { $elemMatch: {  orderId: req.params.orderId }}, mobile: 1}
+            )
+
+            if(customer.payment[0].verifyPaymentRes.status)
+                return res.json({
+                    success: false,
+                    message: "payment has been verified!"
+                })
+
+            let orders = await this.model.Order.find({ orderId: req.params.orderId }, { maxPrice:1 })
+
+            let totalPrice = orders.reduce((accumulator, order) => {
+                return accumulator += order.maxPrice
+            }, 0)
+            
+            let body = {
+                order_id: req.params.orderId,
+                amount: totalPrice,	
+                phone: customer.mobile,
+                callback: "https://www.google.com"
+            }  
+
+            let response = await axios.post('https://api.idpay.ir/v1.1/payment',
+                JSON.stringify(body) , 
+                { headers: config.idPayHeaders } 
+            )
+            response = response.data
+            
+            await this.model.Customer.updateOne(
+                { _id: req.decodedUser.userId, "payment.orderId": req.params.orderId },
+                { $set: { "payment.$.addPaymentRes": response } }     
+            )
+
+
+            return res.json({
+                message: "reset the payment",
+                response: response.data
+            })
+        } 
+        catch (error) {
+            let handleError = new this.transforms.ErrorTransform(error)
+                .parent(this.controllerTag)
+                .class(TAG)
+                .method('resetPayment')
+                .inputParams(req.params)
+                .call()
+
+            if(!res.headersSent) return res.status(500).json(handleError)
+        }
+    }
 }
