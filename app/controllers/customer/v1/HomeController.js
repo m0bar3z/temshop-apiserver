@@ -25,11 +25,39 @@ module.exports = new class HomeController extends Controller {
                     message: "username or mobile is taken!"
                 })
 
-            await this.model.Customer.create(req.body)
+            let user = await this.model.Customer.create(req.body)
+                
+            let options = {
+                expiresIn: config.idTokenExpire,
+                algorithm: config.algorithm,
+                issuer: config.issuer,
+                audience: config.audience
+            }
+            
+            let payload = {
+                username: req.body.username,
+                userId: user._id,
+                userStatus: user.active
+            }
+            let idToken = jwt.sign(payload, config.secret, options)
+
+            options = {
+                expiresIn: config.accessTokenExpire,
+                algorithm: config.algorithm,
+                issuer: config.issuer,
+                audience: config.audience
+            }
+
+            payload = { scope: config.customerScope }
+            let accessToken = jwt.sign(payload, config.secret, options)
 
             return res.json({
                 success: true,
-                message: "registered successfully"
+                message: "registered successfully",
+                data: {
+                    idToken,
+                    accessToken
+                }
             })
         } 
         catch (err) {
