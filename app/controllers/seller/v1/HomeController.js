@@ -91,7 +91,9 @@ module.exports = new class HomeController extends Controller {
                 success: true,
                 data: {
                     idToken,
-                    accessToken
+                    accessToken, 
+                    position: 2,
+                    username: req.body.username
                 },
                 message: "Logged in successfully"
             })

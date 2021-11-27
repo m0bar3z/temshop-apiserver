@@ -56,7 +56,9 @@ module.exports = new class HomeController extends Controller {
                 message: "registered successfully",
                 data: {
                     idToken,
-                    accessToken
+                    accessToken,
+                    position: 1,
+                    username: req.body.username
                 }
             })
         } 
@@ -126,7 +128,9 @@ module.exports = new class HomeController extends Controller {
                 success: true,
                 data: {
                     idToken,
-                    accessToken
+                    accessToken,
+                    position: 1,
+                    username: req.body.username
                 },
                 message: "Logged in successfully"
             })
