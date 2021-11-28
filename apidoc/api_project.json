@@ -1,14 +1,14 @@
 {
-  "name": "tem-apiserver",
+  "name": "Tem-apiserver",
   "version": "1.0.0",
-  "description": "tem-shop Restful service",
-  "title": "tem-shop",
+  "description": "Tem shop Restful service",
+  "title": "Tem-shop",
   "sampleUrl": false,
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2021-10-25T14:17:03.601Z",
+    "time": "2021-11-28T08:16:05.725Z",
     "url": "https://apidocjs.com",
     "version": "0.28.1"
   }

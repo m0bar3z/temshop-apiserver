@@ -106,6 +106,91 @@
   },
   {
     "type": "post",
+    "url": "/api/customer/v1/payment",
+    "title": "AddNewPayment",
+    "version": "1.0.0",
+    "name": "addPayment",
+    "description": "<p>add new payment</p>",
+    "group": "Customer",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response :",
+          "content": "{\n success: true,\n message: \"new payment successfully created\",\n data: {\n     orderId: \"TEM-12345\",\n     link: \"https://idpay.ir/payment\"\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n success: false,\n message: \"cart is empty!\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/routes/customer/v1/financial.js",
+    "groupTitle": "Customer"
+  },
+  {
+    "type": "post",
+    "url": "/api/customer/v1/cart",
+    "title": "AddToCart",
+    "version": "1.0.0",
+    "name": "addToCart",
+    "description": "<p>add new product to cart</p>",
+    "group": "Customer",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "varchar",
+            "optional": false,
+            "field": "productId",
+            "description": "<p>ObjectId of product</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "varchar",
+            "optional": false,
+            "field": "quantity",
+            "description": "<p>quantity of product must be between 1 and 5</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "varchar",
+            "optional": false,
+            "field": "seller",
+            "description": "<p>seller's username</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response :",
+          "content": "{\n success: true,\n message: \"product added to cart\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n success: false,\n message: \"total product quantity is more than 5!\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/routes/customer/v1/cart.js",
+    "groupTitle": "Customer"
+  },
+  {
+    "type": "post",
     "url": "/api/seller/v1/login",
     "title": "Login",
     "version": "1.0.0",
@@ -207,6 +292,90 @@
       ]
     },
     "filename": "app/routes/customer/v1/home.js",
+    "groupTitle": "Customer"
+  },
+  {
+    "type": "put",
+    "url": "/api/customer/v1/payment/reset/:orderId",
+    "title": "ResetPayment",
+    "version": "1.0.0",
+    "name": "resetPayment",
+    "description": "<p>reset customer payment and return new payment link</p>",
+    "group": "Customer",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "varchar",
+            "optional": false,
+            "field": "orderId",
+            "description": "<p>orderId</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response :",
+          "content": "{\n success: true,\n message: \"reset the payment,\n data: {\n     orderId: \"TEM-12345\",\n     link: \"https://idpay.ir/payment\"\n }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n success: false,\n message: \"payment has been verified!\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/routes/customer/v1/financial.js",
+    "groupTitle": "Customer"
+  },
+  {
+    "type": "post",
+    "url": "/api/customer/v1/payment/verify/:orderId",
+    "title": "VerifyPayment",
+    "version": "1.0.0",
+    "name": "verifyPayment",
+    "description": "<p>verify customer payment</p>",
+    "group": "Customer",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "varchar",
+            "optional": false,
+            "field": "orderId",
+            "description": "<p>orderId</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response :",
+          "content": "{\n success: true,\n message: \"payment is verified successfully\",\n data: idPayResponse\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "{\n success: false,\n message: \"امکان تایید پرداخت وجود ندارد\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/routes/customer/v1/financial.js",
     "groupTitle": "Customer"
   },
   {

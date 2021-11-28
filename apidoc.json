@@ -1,6 +1,6 @@
 {
-    "name": "tem-apiserver",
+    "name": "Tem-apiserver",
     "version": "1.0.0",
-    "description": "tem-shop Restful service",
-    "title": "tem-shop"
+    "description": "Tem shop Restful service",
+    "title": "Tem-shop"
 }

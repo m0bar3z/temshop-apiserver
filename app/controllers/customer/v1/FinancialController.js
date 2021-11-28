@@ -207,6 +207,7 @@ module.exports = new class FinancialController extends Controller {
 
 
             return res.json({
+                success: true,
                 message: "reset the payment",
                 response: response.data
             })
